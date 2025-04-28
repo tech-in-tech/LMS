@@ -1,4 +1,5 @@
 import { Menu, School } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import {
   Sheet,
   SheetContent,
@@ -35,7 +36,7 @@ import { Label } from "@/components/ui/label"
 
 const Navbar = () => {
   const user = true;
-  
+
   return (
     <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
       {/* Desktop */}
@@ -64,12 +65,17 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
-                      My Learning
+                      <Link to="my-learning">
+                        My Learning
+                      </Link>
+
 
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
-                      Edit Profile
+                    <Link to="profile">
+                        Edit Profile
+                      </Link>
 
                     </DropdownMenuItem>
 
@@ -122,49 +128,49 @@ const MobileNavbar = () => {
   const role = "instructer"
   return (
     <Sheet>
-  <SheetTrigger asChild>
-    <Button
-      size="icon"
-      className="rounded-full bg-gray-200 hover:bg-gray-300"
-      variant="outline"
-    >
-      <Menu />
-    </Button>
-  </SheetTrigger>
+      <SheetTrigger asChild>
+        <Button
+          size="icon"
+          className="rounded-full bg-gray-200 hover:bg-gray-300"
+          variant="outline"
+        >
+          <Menu />
+        </Button>
+      </SheetTrigger>
 
-  <SheetContent className="flex flex-col justify-between">
-    <div>
-      {/* Header */}
-      <SheetHeader className="flex flex-row items-center justify-between mt-10 mb-4">
-        <SheetTitle className="font-extrabold text-2xl">E-Learning</SheetTitle>
-        <DarkMode />
-      </SheetHeader>
+      <SheetContent className="flex flex-col justify-between">
+        <div>
+          {/* Header */}
+          <SheetHeader className="flex flex-row items-center justify-between mt-10 mb-4">
+            <SheetTitle className="font-extrabold text-2xl">E-Learning</SheetTitle>
+            <DarkMode />
+          </SheetHeader>
 
-      {/* Divider */}
-      <div className="border-b border-gray-200 mb-4" />
+          {/* Divider */}
+          <div className="border-b border-gray-200 mb-4" />
 
-      {/* Navigation */}
-      <nav className="flex flex-col font-bold space-y-4 px-4">
-        <button className="text-left hover:text-primary transition">My Learning</button>
-        <button className="text-left hover:text-primary transition">Edit Profile</button>
-        <button className="text-left text-red-500 hover:text-red-600 transition">Logout</button>
-      </nav>
-    </div>
+          {/* Navigation */}
+          <nav className="flex flex-col font-bold space-y-4 px-4">
+            <button className="text-left hover:text-primary transition">My Learning</button>
+            <button className="text-left hover:text-primary transition">Edit Profile</button>
+            <button className="text-left text-red-500 hover:text-red-600 transition">Logout</button>
+          </nav>
+        </div>
 
-    {/* Footer */}
+        {/* Footer */}
 
-    {
-      role=="instructer" && (
-        <SheetFooter className="mt-6">
-        <SheetClose asChild>
-          <Button type="button">Dashboard</Button>
-        </SheetClose>
-      </SheetFooter>
-      )
-    }
-    
-  </SheetContent>
-</Sheet>
+        {
+          role == "instructer" && (
+            <SheetFooter className="mt-6">
+              <SheetClose asChild>
+                <Button type="button">Dashboard</Button>
+              </SheetClose>
+            </SheetFooter>
+          )
+        }
+
+      </SheetContent>
+    </Sheet>
 
   )
 }

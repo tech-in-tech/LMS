@@ -1,5 +1,5 @@
 import { Menu, School } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Sheet,
   SheetContent,
@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Button } from "@/components/ui/button"
@@ -32,10 +32,27 @@ import DarkMode from '../../DarkMode'
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLogoutUserMutation } from '../../features/api/authApi'
+import { toast } from 'sonner'
 
 
 const Navbar = () => {
   const user = true;
+  const [logoutUser, { data, isSuccess }] = useLogoutUserMutation()
+
+  const logoutHandler = async () => {
+    await logoutUser();
+  }
+const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSuccess) {
+
+      toast.success(data.message || "Logout Successfully")
+      navigate("/login");
+    }
+  }, [isSuccess])
+
 
   return (
     <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
@@ -73,14 +90,14 @@ const Navbar = () => {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
-                    <Link to="profile">
+                      <Link to="profile">
                         Edit Profile
                       </Link>
 
                     </DropdownMenuItem>
 
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={logoutHandler}>
                       Logout
                     </DropdownMenuItem>
 

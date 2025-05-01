@@ -1,6 +1,5 @@
 import React from 'react'
 import Course from './Course';
-import { div } from 'framer-motion/client';
 
 const MyLearning = () => {
   const isLoading = false;

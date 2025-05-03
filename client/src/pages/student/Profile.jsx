@@ -22,19 +22,19 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
 
-  
+
 
   // const isLoading = false;
-  const { data, isLoading,refetch } = useLoadUserQuery();
+  const { data, isLoading, refetch } = useLoadUserQuery();
   const [
     updateUser,
-     { data: updateUserDate,
-       isLoading: updateUserIsloading,
-       isError,
-       error, 
-       isSuccess
-       },
-      ] = useUpdateUserMutation()
+    { data: updateUserDate,
+      isLoading: updateUserIsloading,
+      isError,
+      error,
+      isSuccess
+    },
+  ] = useUpdateUserMutation()
   // console.log(data);
   // const enrolledCourses = [1, 2];
 
@@ -52,16 +52,20 @@ const Profile = () => {
     await updateUser(formData);
   }
 
+  useEffect(() => {
+    refetch();
+  }, [])
+
 
   useEffect(() => {
     if (isSuccess) {
       refetch();
       toast.success("Profile Updated Successfully")
     }
-    if(isError){
+    if (isError) {
       toast.error(error.message || "Failed to update profile")
     }
-  }, [error, updateUserDate,isSuccess,isError])
+  }, [error, updateUserDate, isSuccess, isError])
 
   if (isLoading) return <h1>Profile Loading</h1>
   const user = data && data.user;
@@ -73,7 +77,7 @@ const Profile = () => {
       <div className='flex flex-col md:flex-row items-center md:items-start gap-8 my-5'>
         <div className='flex flex-col items-center'>
           <Avatar className="h-24 w-24 md:h-32 md:w-32 mb-4">
-            <AvatarImage src={user.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
+            <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>

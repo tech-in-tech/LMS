@@ -34,16 +34,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLogoutUserMutation } from '../../features/api/authApi'
 import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
 
 
 const Navbar = () => {
-  const user = true;
+  const { user } = useSelector(store => store.auth);
   const [logoutUser, { data, isSuccess }] = useLogoutUserMutation()
 
   const logoutHandler = async () => {
     await logoutUser();
   }
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) {
@@ -73,7 +74,7 @@ const navigate = useNavigate();
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -85,38 +86,38 @@ const navigate = useNavigate();
                       <Link to="my-learning">
                         My Learning
                       </Link>
-
-
                     </DropdownMenuItem>
-
                     <DropdownMenuItem>
                       <Link to="profile">
                         Edit Profile
                       </Link>
-
                     </DropdownMenuItem>
-
-
                     <DropdownMenuItem onClick={logoutHandler}>
                       Logout
                     </DropdownMenuItem>
-
                   </DropdownMenuGroup>
 
 
+                  {
+                    user.role === "instructor" && (
+                      <>
+                      
+                        <DropdownMenuSeparator />
 
-                  <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          Dashboard
+                        </DropdownMenuItem>
+                      </>
+                    )
+                  }
 
 
-                  <DropdownMenuItem>
-                    Dashboard
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <div className='flex items-center gap-2'>
-                <Button variant="outline">Login</Button>
-                <Button >Signup</Button>
+                <Button onClick={() => navigate("/login")} variant="outline">Login</Button>
+                <Button onClick={() => navigate("/login")}  >Signup</Button>
               </div>
             )
           }

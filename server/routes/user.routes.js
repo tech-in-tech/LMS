@@ -1,7 +1,6 @@
 import express from "express"
 import { getUserProfile, logout, register, updateProfile } from "../controllers/user.controller.js";
 import { login } from "../controllers/user.controller.js";
-
 import isAuthenticated from "../meddleware/isAuthenticated.js";
 import upload from "../utils/multer.js";
 const router = express.Router();

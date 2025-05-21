@@ -1,4 +1,5 @@
 import { Course } from "../models/course.model.js";
+import { Lecture } from "../models/lecture.model.js";
 import { deleatMediaFromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
 // creat course
@@ -79,20 +80,118 @@ export const editCourse = async (req, res) => {
     }
 
 
-    const updateData = { courseTitle, subTitle, description, category, courseLevel, coursePrice, courseThumbnail:courseThumbnail?.secure_url };
+    const updateData = { courseTitle, subTitle, description, category, courseLevel, coursePrice, courseThumbnail: courseThumbnail?.secure_url };
 
-    course = await Course.findByIdAndUpdate(courseId,updateData,{new:true});
+    course = await Course.findByIdAndUpdate(courseId, updateData, { new: true });
     return res.status(200).json({
       course,
-      message:"Course Updated Successfully",
-      success:true
+      message: "Course Updated Successfully",
+      success: true
     })
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message:"Failed t create course",
-      success:false
+      message: "Failed t create course",
+      success: false
+    })
+  }
+}
+
+
+// get course data by ID
+export const getCourseById = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
+        message: "Course Not Found",
+        success: false,
+
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      course
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      messaget: "Failed to get course by id",
+      success: false
+    })
+  }
+}
+
+
+// Create Lecture
+export const createLecture = async (req, res) => {
+  try {
+    const { lectureTitle } = req.body
+    const { courseId } = req.params
+    if (!lectureTitle) {
+      return res.status(400).json({
+        message: "Lecture Title is required",
+        success: false
+      })
+    }
+
+    // create Lecture
+    const lecture = await Lecture.create({ lectureTitle });
+    const course = await Course.findById(courseId);
+    if (course) {
+      course.lectures.push(lecture._id);
+      await course.save();
+    }
+    return res.status(201).json({
+      lecture,
+      message: "Lecture Created Successfully",
+      success: true
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to create Lecture",
+      success: false
+    })
+  }
+}
+
+// Get lecture controller
+export const getCourseLecture = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId).populate("lectures")
+    if (!course) {
+      return res.status(404).json({
+        message: "Course Not Found",
+        success: False
+      })
+    }
+    return res.status(200).json({
+      lectures: course.lectures
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to get Lecture",
+      success: false
+    })
+  }
+}
+
+
+// Update Lecture controller
+export const editLecture = async (req,res)=>{
+  try {
+    const {isPreviewFree,lectureTitle} = req.body;
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Failed to get Lecture",
+      success: false
     })
   }
 }
